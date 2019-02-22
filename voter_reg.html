@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Understanding patterns in voter registration</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Joe Heywood, Greater London Authority" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding/plotly.js"></script>
+    <script src="libs/typedarray/typedarray.min.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link href="libs/plotlyjs/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotlyjs/plotly-latest.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Understanding patterns in voter registration
+## A data-driven approach
+### Joe Heywood, Greater London Authority
+### 2019-02-21)
+
+---
+
+
+
+
+class: center, middle
+
+![alt text](https://www.london.gov.uk/sites/default/files/styles/gla_2_1_large/public/post_election_992x496.png?itok=OUiZv6HJ "Your vote matters")
+
+---
+class: inverse, center, middle
+
+# Background and objectives
+
+---
+
+# Context
+
+- Ongoing work at the Greater London Authority to improve voter registration
+- Includes a drive later on this year to increase voter registration
+
+
+![alt text](https://www.yourvotematters.co.uk/__data/assets/git_bridge/0007/219580/dist/mysource_files/logo.svg "Your vote matters")
+--
+
+- Trying to back up this campaign with evidence - literature review
+- Regression analysis at ward level
+
+--
+
+- Idea that we can use the data we tend to use for population projections, census analysis, social policy to do something a bit different
+ 
+---
+
+# Objectives
+
+1. Use machine learning techniques to spot patterns and trends within the data 
+1. Gain some insights that more traditional methods would miss 
+1. Try out some new techniques
+
+--
+
+1. Focus on **understanding** the data. 
+1. Produce recommendations and ideas about how to pursue better-informed campaigns to maximize voter registration in the capital
+
+
+---
+class: inverse, middle, center
+
+# Data
+
+---
+
+# Participating boroughs
+
+- Lewisham
+
+--
+
+- Brent
+- Waltham Forest
+- Wandsworth
+
+--
+
+- Greenwich
+- Lambeth
+
+
+
+---
+
+
+# Importance of data
+
+- Producing and maintaining the data set is the most time-consuming part of this project
+- Probably be the most valuable output from the project
+
+--
+
+- Never going to be perfect
+
+--
+
+- Starting point was an anonymised electoral register in Lewisham
+- Only one point in time, no names, but a UPRN for each address
+
+---
+
+# Other data sources
+
+.pull-left[
+- Census / ONS population estimates
+- UK buildings: data about the age and type of buildings
+- CDRC data: population churn
+]
+.pull-right[
+- EPC
+- Land registry data
+- Other bits and pieces
+]
+
+Always on the lookout for data that will show evidence of a younger, renting, precarious households/population
+
+---
+class: inverse, middle, center
+
+# Methodology
+
+---
+
+# Methods
+
+### Unsupervised
+
+- K-means clustering
+
+### Supervised
+
+- Multiple regression
+- Regression tree
+- Random forest
+
+---
+
+# Software
+
+Everything I have done has been using the R programming language. This includes:
+
+- Wrangling data
+- Each of the methods
+- Visualising data (ggplot, plotly)
+- Mapping the data (leaflet)
+
+--
+
+### Rmarkdown
+
+- Communicating findings (flexdashboard, crosstalk)
+- This presenttation
+
+---
+
+# Communicating findings
+
+I have set up a small website on github, using the output from `flexdashboard`. This means I write everything using R/Rmarkdown.
+
+- Interactivity provided by `crosstalk`
+- Big advantage of this is I can have a shiny-*ish* app, but the (sensitive) data behind it doesn't have to be on the site
+
+---
+
+# Results
+
+--
+
+### ... (so far)
+
+--
+
+
+
+---
+
+# Clustering
+
+Focused on buildings in Lewisham to begin with. Five groups emerged.
+
+- Victorian terraced housing, often converted into flats 
+- High proportions of flat blocks built in the post-war (1945-79)
+- Terraced houses built between the wars
+- Modern flat blocks 
+- Areas with more detached/semi-detached houses, mostly interwar
+
+
+---
+
+### Predictive modelling
+
+What I am using so far:
+
+- Private rented
+- IMD
+- Living in flats
+- People with degrees
+- Average age of adults
+- Proportion of population that is under 18
+- Buildings 1979-1999
+- Buildings 2000-
+
+---
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; stars &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 73.713 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.964 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; private_rented &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.182 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; imd_decile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.217 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.092 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; * &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; flat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.030 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; degree &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.528 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.637 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; average_adult &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.452 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.046 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; modern &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.011 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.006 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; . &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; perc_kids &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.340 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.459 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; millnm &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.103 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.014 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+### Missing data problem!
+
+---
+
+### Absolute t-values from the regression model
+
+<div class="container-fluid crosstalk-bscols">
+<div class="fluid-row">
+<div class="col-xs-12">
+<div id="a6e6eb7427b" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="a6e6eb7427b">{"x":{"visdat":{"a6e2664dd74":["function () ","plotlyVisDat"]},"cur_data":"a6e2664dd74","attrs":{"a6e2664dd74":{"x":[null,"3. Privately rented %","9. IMD decile","2. Flat blocks %","6. Population with degree %","5. Average age of adults","8. 1980-1999 Buildings %","4. Population under 17","7. 2000- Buidings %"],"y":[22.765057368818,12.0766669634029,0.194926351334858,7.16886138576529,3.90493895453393,10.459064852508,3.62912930251483,8.10272096052894,7.68688316991993],"alpha":1,"sizes":[10,100],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Regression","xaxis":{"domain":[0,1],"type":"category","categoryorder":"array","categoryarray":["2. Flat blocks %","3. Privately rented %","4. Population under 17","5. Average age of adults","6. Population with degree %","7. 2000- Buidings %","8. 1980-1999 Buildings %","9. IMD decile"]},"yaxis":{"domain":[0,1]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":["3. Privately rented %","9. IMD decile","2. Flat blocks %","6. Population with degree %","5. Average age of adults","8. 1980-1999 Buildings %","4. Population under 17","7. 2000- Buidings %"],"y":[12.0766669634029,0.194926351334858,7.16886138576529,3.90493895453393,10.459064852508,3.62912930251483,8.10272096052894,7.68688316991993],"type":"bar","marker":{"fillcolor":"rgba(31,119,180,1)","color":"rgba(31,119,180,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+</div>
+</div>
+</div>
+
+---
+
+### Variable importance from regression tree
+
+<div id="a6e76aa93f9" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="a6e76aa93f9">{"x":{"visdat":{"a6e45e55b3f":["function () ","plotlyVisDat"]},"cur_data":"a6e45e55b3f","attrs":{"a6e45e55b3f":{"y":[33696.5073311843,17882.6933750484,6890.59919115034,5966.87264885623,5508.12905606514,3086.24512448816,1609.72569562358,807.257030030565],"x":["3. Privately rented %","5. Average age of adults","7. 2000- Buidings %","2. Flat blocks %","4. Population under 17","6. Population with degree %","9. IMD decile","8. 1980-1999 Buildings %"],"alpha":1,"sizes":[10,100],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Regression Tree","xaxis":{"domain":[0,1],"type":"category","categoryorder":"array","categoryarray":["2. Flat blocks %","3. Privately rented %","4. Population under 17","5. Average age of adults","6. Population with degree %","7. 2000- Buidings %","8. 1980-1999 Buildings %","9. IMD decile"]},"yaxis":{"domain":[0,1]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"y":[33696.5073311843,17882.6933750484,6890.59919115034,5966.87264885623,5508.12905606514,3086.24512448816,1609.72569562358,807.257030030565],"x":["3. Privately rented %","5. Average age of adults","7. 2000- Buidings %","2. Flat blocks %","4. Population under 17","6. Population with degree %","9. IMD decile","8. 1980-1999 Buildings %"],"type":"bar","marker":{"fillcolor":"rgba(31,119,180,1)","color":"rgba(31,119,180,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+
+---
+
+### Variable importance (%MSE) from random forest
+
+<div id="a6e7eb923d4" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="a6e7eb923d4">{"x":{"visdat":{"a6e11d3bff5":["function () ","plotlyVisDat"]},"cur_data":"a6e11d3bff5","attrs":{"a6e11d3bff5":{"y":[31.3885294711134,5.96845909290005,7.4570272223401,15.3095523072021,26.4906055253959,2.24004165944717,14.1909111545831,4.28758866127039],"x":["3. Privately rented %","9. IMD decile","2. Flat blocks %","6. Population with degree %","5. Average age of adults","8. 1980-1999 Buildings %","4. Population under 17","7. 2000- Buidings %"],"alpha":1,"sizes":[10,100],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Random Forest","xaxis":{"domain":[0,1],"type":"category","categoryorder":"array","categoryarray":["2. Flat blocks %","3. Privately rented %","4. Population under 17","5. Average age of adults","6. Population with degree %","7. 2000- Buidings %","8. 1980-1999 Buildings %","9. IMD decile"]},"yaxis":{"domain":[0,1]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"y":[31.3885294711134,5.96845909290005,7.4570272223401,15.3095523072021,26.4906055253959,2.24004165944717,14.1909111545831,4.28758866127039],"x":["3. Privately rented %","9. IMD decile","2. Flat blocks %","6. Population with degree %","5. Average age of adults","8. 1980-1999 Buildings %","4. Population under 17","7. 2000- Buidings %"],"type":"bar","marker":{"fillcolor":"rgba(31,119,180,1)","color":"rgba(31,119,180,1)","line":{"color":"transparent"}},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+
+
+---
+
+<div id="a6e66b46439" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="a6e66b46439">{"x":{"visdat":{"a6e114a1e18":["function () ","plotlyVisDat"]},"cur_data":"a6e114a1e18","attrs":{"a6e114a1e18":{"orientation":"h","node":{"label":["private_rented < 84.9","average_adult < 35.7","degree < 0.9","64%","75%","private_rented < 88.3","perc_kids < 0.2","76%","83%","millnm < 2.1","79%","85%","private_rented < 75.2","millnm < 49.3","71%","degree < 0.5","76%","private_rented < 80.1","millnm < 11.5","80%","86%","88%","flat < 44.8","average_adult < 37.1","64%","millnm < 37","69%","88%","private_rented < 70.2","90%","92%"],"color":["green","green","green","brown","brown","green","green","brown","brown","green","brown","brown","green","green","brown","green","brown","green","green","brown","brown","brown","green","green","brown","green","brown","brown","green","brown","brown"],"pad":15,"thickness":8,"line":{"color":"black","width":0.2}},"link":{"color":["#eeaaaa","#aaaaee","#bbee","#eebbbb","#bbee","#eebbbb","#eeaaaa","#aaaaee","#bbee","#eebbbb","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#bbee","#eebbbb","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#bbee","#eebbbb","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee"],"source":[0,0,1,1,2,2,5,5,6,6,9,9,12,12,13,13,15,15,17,17,18,18,22,22,23,23,25,25,28,28],"target":[1,12,2,5,3,4,6,9,7,8,10,11,13,22,14,15,16,17,18,21,19,20,23,28,24,25,26,27,29,30],"value":[358,2166,46,312,16,30,132,180,107,25,71,109,883,1283,10,873,10,863,378,485,28,350,365,918,8,357,9,348,287,631],"label":["% of addresses renting privately is greater than 84.9","% of addresses renting privately is less than 84.9","Average age of adults is less than 35.7","Average age of adults is greater than 35.7","% of residents with degree is less than 0.9","% of residents with degree is greater than 0.9","% of addresses renting privately is greater than 88.3","% of addresses renting privately is less than 88.3","NAless than 0.2","NAgreater than 0.2","% of residents in buildings after 1999 is greater than 2.1","% of residents in buildings after 1999 is less than 2.1","% of addresses renting privately is greater than 75.2","% of addresses renting privately is less than 75.2","% of residents in buildings after 1999 is greater than 49.3","% of residents in buildings after 1999 is less than 49.3","% of residents with degree is less than 0.5","% of residents with degree is greater than 0.5","% of addresses renting privately is greater than 80.1","% of addresses renting privately is less than 80.1","% of residents in buildings after 1999 is greater than 11.5","% of residents in buildings after 1999 is less than 11.5","% of addresses that are flats is greater than 44.8","% of addresses that are flats is less than 44.8","Average age of adults is less than 37.1","Average age of adults is greater than 37.1","% of residents in buildings after 1999 is greater than 37","% of residents in buildings after 1999 is less than 37","% of addresses renting privately is greater than 70.2","% of addresses renting privately is less than 70.2"]},"alpha":1,"sizes":[10,100],"type":"sankey"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Voter registration decision tree","font":{"size":11},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"orientation":"h","node":{"label":["private_rented < 84.9","average_adult < 35.7","degree < 0.9","64%","75%","private_rented < 88.3","perc_kids < 0.2","76%","83%","millnm < 2.1","79%","85%","private_rented < 75.2","millnm < 49.3","71%","degree < 0.5","76%","private_rented < 80.1","millnm < 11.5","80%","86%","88%","flat < 44.8","average_adult < 37.1","64%","millnm < 37","69%","88%","private_rented < 70.2","90%","92%"],"color":["green","green","green","brown","brown","green","green","brown","brown","green","brown","brown","green","green","brown","green","brown","green","green","brown","brown","brown","green","green","brown","green","brown","brown","green","brown","brown"],"pad":15,"thickness":8,"line":{"color":"black","width":0.2}},"link":{"color":["#eeaaaa","#aaaaee","#bbee","#eebbbb","#bbee","#eebbbb","#eeaaaa","#aaaaee","#bbee","#eebbbb","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#bbee","#eebbbb","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee","#bbee","#eebbbb","#eeaaaa","#aaaaee","#eeaaaa","#aaaaee"],"source":[0,0,1,1,2,2,5,5,6,6,9,9,12,12,13,13,15,15,17,17,18,18,22,22,23,23,25,25,28,28],"target":[1,12,2,5,3,4,6,9,7,8,10,11,13,22,14,15,16,17,18,21,19,20,23,28,24,25,26,27,29,30],"value":[358,2166,46,312,16,30,132,180,107,25,71,109,883,1283,10,873,10,863,378,485,28,350,365,918,8,357,9,348,287,631],"label":["% of addresses renting privately is greater than 84.9","% of addresses renting privately is less than 84.9","Average age of adults is less than 35.7","Average age of adults is greater than 35.7","% of residents with degree is less than 0.9","% of residents with degree is greater than 0.9","% of addresses renting privately is greater than 88.3","% of addresses renting privately is less than 88.3","NAless than 0.2","NAgreater than 0.2","% of residents in buildings after 1999 is greater than 2.1","% of residents in buildings after 1999 is less than 2.1","% of addresses renting privately is greater than 75.2","% of addresses renting privately is less than 75.2","% of residents in buildings after 1999 is greater than 49.3","% of residents in buildings after 1999 is less than 49.3","% of residents with degree is less than 0.5","% of residents with degree is greater than 0.5","% of addresses renting privately is greater than 80.1","% of addresses renting privately is less than 80.1","% of residents in buildings after 1999 is greater than 11.5","% of residents in buildings after 1999 is less than 11.5","% of addresses that are flats is greater than 44.8","% of addresses that are flats is less than 44.8","Average age of adults is less than 37.1","Average age of adults is greater than 37.1","% of residents in buildings after 1999 is greater than 37","% of residents in buildings after 1999 is less than 37","% of addresses renting privately is greater than 70.2","% of addresses renting privately is less than 70.2"]},"type":"sankey","textfont":{"fillcolor":"rgba(31,119,180,1)","color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+
+---
+
+# Discussion
+
+- Binning dependent variable?
+- How to communicate results
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
