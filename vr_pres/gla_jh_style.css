@@ -1,0 +1,20 @@
+.remark-slide {
+	border-bottom: 10px solid  #353D42;
+  	font-family: Arial,FreeSans,sans-serif;
+}
+
+
+.inverse {
+  background-color: #353D42;
+  color: #FFFFB3;
+}
+
+.table {
+    font-size: 0.8em;
+}
+
+.title-slide {
+  background-image: url(https://www.london.gov.uk/sites/default/files/styles/gla_2_1_large/public/post_election_992x496.png?itok=OUiZv6HJ);
+  background-size: 40%;
+  background-position: bottom;
+}
